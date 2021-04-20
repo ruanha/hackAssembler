@@ -12,8 +12,9 @@ assert assemble_jump('null') == '000', 'should be 000'
 assert assemble_jump('JLT') == '100', 'should be 100'
 
 # Test assemble_compute
-assert assemble_compute('D-A') == '010011'
-assert assemble_compute('A+1') == '110111'
+assert assemble_compute('D') == '0001100'
+assert assemble_compute('A') == '0110000'
+assert assemble_compute('M') == '1110000'
 
 print('All tests passed')
 
