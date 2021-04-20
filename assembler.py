@@ -12,6 +12,17 @@ dest_map = {
         'AMD': '111'
         }
 
+jump_map = {
+        'null': '000',
+        'JGT' : '001',
+        'JEQ' : '010',
+        'JGE' : '011',
+        'JLT' : '100',
+        'JNE' : '101',
+        'JLE' : '110',
+        'JMP' : '111'
+        }
+
 def translate_a_instruction(line):
     opt_code = line[0]
     address_decimal = int(line[1:])
@@ -22,7 +33,7 @@ def assemble_destination(dest):
     return dest_map[dest]
 
 def assemble_jump(jump):
-    return '111'
+    return jump_map[jump]
 
 def assemble_compute(comp):
     return '0111111'
