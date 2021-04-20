@@ -9,12 +9,18 @@ def translate_a_instruction(line):
     address_binary = '{:015b}'.format(address_decimal)
     return address_binary
 
+def translate_c_instruction(line):
+    return '1110000111111111'
+   
+
 def main(filename):
     basename = filename.split('.')[0]
     with open(filename, "r") as asm_file, open(basename+'.hack', 'w') as output_file:
         for line in asm_file:
             if (line[0] == "@"):
                 output_file.write('0' + translate_a_instruction(line) + '\n')
+            else:
+                output_file.write('1' + translate_c_instruction(line) + '\n')
 
 if __name__ == "__main__":
     filename = sys.argv[1]
