@@ -3,11 +3,15 @@ import sys
 if len(sys.argv) !=2:
     raise ValueError('Please provide the name of an assembler file as the only argument.')
 
+def translate_a_instruction(line):
+    return '0111111111111'
+
 def main(filename):
     basename = filename.split('.')[0]
     with open(filename, "r") as asm_file, open(basename+'.hack', 'w') as output_file:
-        data = asm_file.read()
-        print(data)
+        for line in asm_file:
+            if (line[0] == "@"):
+                output_file.write(translate_a_instruction(line) + '\n')
 
 if __name__ == "__main__":
     filename = sys.argv[1]
