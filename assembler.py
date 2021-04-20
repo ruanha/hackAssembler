@@ -21,13 +21,20 @@ def translate_a_instruction(line):
 def assemble_destination(dest):
     return dest_map[dest]
 
+def assemble_jump(jump):
+    return '111'
+
+def assemble_compute(comp):
+    return '0111111'
+
 def assemble_c_instruction(parts):
-    assembly = ''
     dest = parts[0]
     comp = parts[1]
-    if len(parts > 2):
+    jump = ''
+    if len(parts) > 2:
         jump = parts[2]
-    return assemble_destination(dest)
+    junk = '11'
+    return junk + assemble_compute(comp) + assemble_destination(dest) + assemble_jump(jump)
 
 def translate_c_instruction(line):
     #remove all whitespace
