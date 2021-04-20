@@ -1,8 +1,5 @@
 import sys
 
-if len(sys.argv) !=2:
-    raise ValueError('Please provide the name of an assembler file as the only argument.')
-
 def translate_a_instruction(line):
     opt_code = line[0]
     address_decimal = int(line[1:])
@@ -23,6 +20,9 @@ def main(filename):
                 output_file.write('1' + translate_c_instruction(line) + '\n')
 
 if __name__ == "__main__":
+    if len(sys.argv) !=2:
+        raise ValueError('Please provide the name of an assembler file as the only argument.')
+
     filename = sys.argv[1]
 
     main(filename)
