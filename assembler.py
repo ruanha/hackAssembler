@@ -1,7 +1,7 @@
 import sys
 
-#if len(sys.argv) !=2:
-#    raise ValueError('Please provide the name of an assembler file as the only argument.')
+if len(sys.argv) !=2:
+    raise ValueError('Please provide the name of an assembler file as the only argument.')
 
 def main(filename):
     with open(filename, "r") as asm_file:
