@@ -17,12 +17,7 @@ def assemble_jump(jump):
 def assemble_compute(comp):
     return comp_map[comp]
 
-def assemble_c_instruction(parts):
-    dest = parts[0]
-    comp = parts[1]
-    jump = ''
-    if len(parts) > 2:
-        jump = parts[2]
+def assemble_c_instruction(dest, comp, jump):
     junk = '11'
     return junk + assemble_compute(comp) + assemble_destination(dest) + assemble_jump(jump)
 
@@ -30,9 +25,21 @@ def translate_c_instruction(line):
     #remove all whitespace
     #split at '=' and ';' to get dest = comp ; jump
     line_no_whitespace = re.sub(r'[\s\n]', '', line)
-    parts = re.split(r'[=;]', line_no_whitespace)
-    assemble_c_instruction(parts)
-    return '1110000111111111'
+    #parts = re.split(r'[=;]', line_no_whitespace)
+    split_at_equal = line_no_whitespace.split('=')
+    dest = 'null'
+    comp = 'null'
+    jump = 'null'
+    if (len(split_at_equal) == 1):
+        comp, jump = split_at_equal.split(';')
+    else:
+        dest = split_at_equal[0]
+        split_at_semi = split_at_equal[1].split(';')
+        if (len(split_at_semi) == 1):
+            comp = split_at_semi[0]
+        else:
+            comp, jump = split_at_semi
+    return assemble_c_instruction(dest, comp, jump)
    
 
 def main(filename):
