@@ -1,27 +1,6 @@
 import sys
 import re
-
-dest_map = {
-        'null': '000',
-        'M'   : '001',
-        'D'   : '010',
-        'MD'  : '011',
-        'A'   : '100',
-        'AM'  : '101',
-        'AD'  : '110',
-        'AMD' : '111'
-        }
-
-jump_map = {
-        'null': '000',
-        'JGT' : '001',
-        'JEQ' : '010',
-        'JGE' : '011',
-        'JLT' : '100',
-        'JNE' : '101',
-        'JLE' : '110',
-        'JMP' : '111'
-        }
+from binary_maps import comp_map, dest_map, jump_map
 
 def translate_a_instruction(line):
     opt_code = line[0]
@@ -36,39 +15,7 @@ def assemble_jump(jump):
     return jump_map[jump]
 
 def assemble_compute(comp):
-    c = [None] * 7
-    
-    result = re.search(r'\W', comp) # search for non-lettter chars \W 
-    if result:
-        operator = result.group()
-    
-    if result and operator:
-        res = split(comp, operator)
-
-    else: # no operator: assignment without negation eg.D=A, D=1
-        c[0] = 0
-        c[1] = 0
-        c[2] = 0
-        c[3] = 0
-        c[4] = 0
-        c[5] = 0 #no operator -> no + or & operator
-        c[6] = 0 #no operator -> no ! operator
-        #identify operand/constant
-        if comp == 'A':
-            c[1] = 1
-            c[2] = 1
-        elif comp == 'D':
-            c[3] = 1
-            c[4] = 1
-        elif comp == 'M':
-            c[0] = 1
-            c[1] = 1
-            c[2] = 1
-
-    if (any(x is None for x in c)):
-        raise ValueError("Can't translate c-instruction")
-    
-    return ''.join(map(str, c))
+    return comp_map[comp]
 
 def assemble_c_instruction(parts):
     dest = parts[0]
@@ -82,7 +29,7 @@ def assemble_c_instruction(parts):
 def translate_c_instruction(line):
     #remove all whitespace
     #split at '=' and ';' to get dest = comp ; jump
-    line_no_whitespace = re.sub(r'[\s\n]', '', line.content)
+    line_no_whitespace = re.sub(r'[\s\n]', '', line)
     parts = re.split(r'[=;]', line_no_whitespace)
     assemble_c_instruction(parts)
     return '1110000111111111'
