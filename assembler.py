@@ -1,4 +1,5 @@
 import sys
+import os
 import re
 from binary_maps import comp_map, dest_map, jump_map
 
@@ -30,8 +31,9 @@ def translate_c_instruction(line):
     dest = 'null'
     comp = 'null'
     jump = 'null'
+    print(split_at_equal)
     if (len(split_at_equal) == 1):
-        comp, jump = split_at_equal.split(';')
+        comp, jump = split_at_equal[0].split(';')
     else:
         dest = split_at_equal[0]
         split_at_semi = split_at_equal[1].split(';')
@@ -42,21 +44,19 @@ def translate_c_instruction(line):
     return assemble_c_instruction(dest, comp, jump)
    
 
-def main(filename):
-    basename = filename.split('.')[0]
-    with open(filename, "r") as asm_file, open(basename+'.hack', 'w') as output_file:
+def main(filepath):
+    basename = os.path.basename(filepath).split('.')[0]
+    with open(filepath, "r") as asm_file, open(basename + '.hack', 'w') as output_file:
         count = 0
-        for line in asm_file:
+        for line in asm_file:    
             if (line[0] == "@"):
                 output_file.write('0' + translate_a_instruction(line) + '\n')
-            else:
+            elif (line[0] != '/' and line[0].strip() != ''):
                 output_file.write('1' + translate_c_instruction(line) + '\n')
-            # TODO handle comments
 
 if __name__ == "__main__":
     if len(sys.argv) !=2:
         raise ValueError('Please provide the name of an assembler file as the only argument.')
+    filepath = sys.argv[1]
 
-    filename = sys.argv[1]
-
-    main(filename)
+    main(filepath)
