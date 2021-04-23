@@ -1,8 +1,14 @@
 import sys
 import os
 from instructions import *  
+from symbols import create_symbol_table
 
 def main(filepath):
+
+    with open(filepath, "r") as asm_file:
+        symbol_table = create_symbol_table(asm_file)
+    print(symbol_table)
+
     basename = os.path.basename(filepath).split('.')[0]
     with open(filepath, "r") as asm_file, open(basename + '.hack', 'w') as output_file:
         for line in asm_file: 
