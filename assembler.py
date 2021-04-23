@@ -5,8 +5,7 @@ from instructions import *
 def main(filepath):
     basename = os.path.basename(filepath).split('.')[0]
     with open(filepath, "r") as asm_file, open(basename + '.hack', 'w') as output_file:
-        count = 0
-        for line in asm_file:    
+        for line in asm_file: 
             if (line[0] == "@"):
                 output_file.write('0' + translate_a_instruction(line) + '\n')
             elif (line[0] != '/' and line[0].strip() != ''):
