@@ -24,24 +24,43 @@ symbol_table = {
     'THAT'   : 4
     }
 
+def get_label(s):
+    return s.replace('(', '').replace(')', '')
+
+def is_label(c):
+    return c[0] == '('
+
+def is_symbol(c):
+    return (c[0] == '@' and not c[1].isdigit())
+
 def create_symbol_table(file):
     #first pass
     count = 0
     for line in file:
-        if (line[0] == '('):
-            symbol = line.replace('(', '').replace(')', '')
+        if is_label(line):
+            symbol = get_label(line)
             symbol_table[symbol] = count + 1
         count = count + 1
     
     #second pass
     count = 16
     for line in file:
-        if (line[0] == '@' and type(line[1]) != int):
+        if (is_symbol(line)):
             symbol = line[1:]
             if (symbol not in symbol_table):
                 symbol_table[symbol] = count
                 count = count + 1
-
+    print(symbol_table)
     return symbol_table
+
+def replace_symbols(commands):
+    symbol_table = create_symbol_table(commands)
+    commandsL = []
+    for command in commands:
+        if is_symbol(command):
+            commandsL.append( '@' + str( symbol_table[command[1:]] ) )
+        elif not is_label(command):
+            commandsL.append(command)
+    return commandsL
 
 

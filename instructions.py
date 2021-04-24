@@ -21,10 +21,7 @@ def assemble_c_instruction(dest, comp, jump):
     return junk + assemble_compute(comp) + assemble_destination(dest) + assemble_jump(jump)
 
 def translate_c_instruction(line):
-    #split at '=' and ';' to get dest = comp ; jump
-    line_no_whitespace = re.sub(r'[\s\n]', '', line)
-    #parts = re.split(r'[=;]', line_no_whitespace)
-    split_at_equal = line_no_whitespace.split('=')
+    split_at_equal = line.split('=')
     dest = 'null'
     comp = 'null'
     jump = 'null'
